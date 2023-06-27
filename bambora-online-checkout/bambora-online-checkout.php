@@ -660,10 +660,10 @@ function init_bambora_online_checkout() {
 			$request->customer             = $this->create_bambora_customer( $order );
 			$request->order                = $this->create_bambora_order( $order, $is_request_to_change_payment_method );
 			$request->instantcaptureamount = $this->instantcapture === 'yes' ? $request->order->total : 0;
-			$request->language             = str_replace( '_', '-', get_locale() );
+			$request->language             = $this->get_language();
 			$paymentWindow                 = new Bambora_Online_Checkout_Request_Payment_Window();
 			$paymentWindow->id             = $this->paymentwindowid;
-			$paymentWindow->language       = get_bloginfo( 'language' );
+			$paymentWindow->language       = $this->get_language();
 
 			$request->paymentwindow = $paymentWindow;
 			$request->url           = $this->create_bambora_url( $order );
@@ -679,6 +679,23 @@ function init_bambora_online_checkout() {
 			}
 
 			return $request;
+		}
+
+		/**
+		 * Fixes Wordpress locale.
+		 * 
+		 * For example: 
+		 * 	1. If get_locale() returns: 'fi', then change it to 'fi_FI' and return 'fi-FI'.
+		 *  2. If get_locale() returns: 'sv_SE', then return 'sv-SE';
+		 * 
+		 * @return string
+		 */
+		private function get_language() {
+			$language = get_locale();
+			if ( !str_contains( $language, '_' )) {
+				$language = $language . '_' . strtoupper( $language );
+			}
+			return str_replace( '_', '-', $language );
 		}
 
 		/**
@@ -820,7 +837,7 @@ function init_bambora_online_checkout() {
 			$bambora_paymentrequest_parameters->url   = $this->create_bambora_url( $order, true );
 			$bambora_paymentrequest_payment_window    = new Bambora_Online_Checkout_Request_Payment_Window();
 
-			$bambora_paymentrequest_payment_window->language  = str_replace( '_', '-', get_locale() );
+			$bambora_paymentrequest_payment_window->language  = $this->get_language();
 			$bambora_paymentrequest_payment_window->id        = $this->paymentwindowid;
 			$bambora_paymentrequest_parameters->paymentwindow = $bambora_paymentrequest_payment_window;
 			$bambora_paymentrequest->parameters               = $bambora_paymentrequest_parameters;
