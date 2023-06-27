@@ -693,7 +693,7 @@ function init_bambora_online_checkout() {
 		private function get_language() {
 			$language = get_locale();
 			if ( !str_contains( $language, '_' )) {
-				$language = $language . '_' . strtoupper( $language );
+				return $language . '-' . strtoupper( $language );
 			}
 			return str_replace( '_', '-', $language );
 		}
