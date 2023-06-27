@@ -685,7 +685,7 @@ function init_bambora_online_checkout() {
 		 * Fixes Wordpress locale.
 		 * 
 		 * For example: 
-		 * 	1. If get_locale() returns: 'fi', then change it to 'fi_FI' and return 'fi-FI'.
+		 * 	1. If get_locale() returns: 'fi', then return 'fi-FI'.
 		 *  2. If get_locale() returns: 'sv_SE', then return 'sv-SE';
 		 * 
 		 * @return string
